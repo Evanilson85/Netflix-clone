@@ -4,15 +4,26 @@
       <font-awesome-icon class="icons" icon="play" />
     </video> -->
 
-    <div class="section" v-for="item in fil" :key="item.id">
-      <h1 style="color: #fff">{{ item.title }}</h1>
-      <img src="../../assets/video/Home/avengers-infinity.jpg" alt="" />
+    <div
+      class="section"
+      v-for="item in fil"
+      :key="item.id"
+      @click="handleClick(item)"
+    >
+      <h1 style="color: #fff">
+        {{ item.title }}
+      </h1>
+      <img
+        :src="'https://image.tmdb.org/t/p/w500' + item.backdrop_path"
+        :alt="item.title"
+      />
       <!--  Quero renderizar as imagens da api Filmes na tag img   o caminho inicial das imagens https://image.tmdb.org/t/p/w500   e para acessar item.backdrop_path-->
     </div>
   </section>
 </template>
 <script>
 import filmes from "../../service/controller";
+
 export default {
   data() {
     return {
@@ -24,10 +35,19 @@ export default {
     filmes
       .imgFilmes()
       .then((result) => {
+        console.log(result.data.results[0]);
+
         this.fil = result.data.results;
         // console.log(this.fil);
       })
       .catch((err) => console.error(err));
+  },
+  methods: {
+    handleClick(item) {
+      const { id } = item;
+
+      location.href = `/movies/${id}`;
+    },
   },
 };
 </script>
